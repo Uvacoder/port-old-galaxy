@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import { useState, useEffect } from 'react'
 import { useLanyard } from 'use-lanyard'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMobileAlt } from '@fortawesome/free-solid-svg-icons'
 import styles from './Lanyard.module.scss'
 
 export default function Lanyard() {
@@ -94,6 +96,40 @@ export default function Lanyard() {
         </div>
       </>
     )
+  } else if (activity !== undefined && (activity.active_on_discord_mobile || activity.active_on_discord_desktop)) {
+    if (activity.discord_status === 'dnd') {
+      return (
+        <>
+          <div className={styles.activityOnlineStatusDnd}>
+            <p><DndCircle />Do Not Disturb</p>
+          </div>
+        </>
+      )
+    } else if (activity.active_on_discord_desktop) {
+      return (
+        <>
+          <div className={styles.activityOnlineStatus}>
+            <p><OnlineCircle />Online</p>
+          </div>
+        </>
+      )
+    } else if (activity.active_on_discord_mobile) {
+      return (
+        <>
+          <div className={styles.activityOnlineStatus}>
+            <p><OnlineMobile><FontAwesomeIcon icon={faMobileAlt} /></OnlineMobile>Online</p>
+          </div>
+        </>
+      )
+    }
+  } else if (activity !== undefined && !activity.active_on_discord_desktop && !activity.active_on_discord_mobile) {
+    return (
+      <>
+        <div className={styles.activityOnlineStatus}>
+          <p><OfflineCircle />Offline</p>
+        </div>
+      </>
+    )
   } else {
     return (
       <></>
@@ -118,6 +154,7 @@ const Row = styled.div`
 const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
+  min-width: 0;
 `;
 
 const Info = styled.div`
@@ -126,10 +163,51 @@ const Info = styled.div`
   h5 {
     margin: 0;
     font-size: 13px;
+    
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
   p {
     margin: 0;
     padding-top: 3px;
     font-size: 10px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
+`;
+
+const OnlineCircle = styled.div`
+  height: 10px;
+  width: 10px;
+  border-radius:50%;
+  background-color: rgb(28, 176, 80);
+  display: inline-block;
+  margin-right: 10px;
+`;
+
+const DndCircle = styled.div`
+  height: 10px;
+  width: 10px;
+  border-radius:50%;
+  background-color: #f04747;
+  display: inline-block;
+  margin-right: 10px;
+`;
+
+const OfflineCircle = styled.div`
+  height: 10px;
+  width: 10px;
+  border-radius:50%;
+  background-color: rgba(200, 200, 200, 0.3);
+  display: inline-block;
+  margin-right: 10px;
+`;
+
+const OnlineMobile = styled.div`
+  display: inline-block;
+  margin-right: 10px;
+  color: rgb(28, 176, 80);
 `;
