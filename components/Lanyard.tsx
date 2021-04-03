@@ -122,17 +122,13 @@ export default function Lanyard() {
         </>
       )
     }
-  } else if (activity !== undefined && !activity.active_on_discord_desktop && !activity.active_on_discord_mobile) {
+  } else {
     return (
       <>
         <div className={styles.activityOnlineStatus}>
           <p><OfflineCircle />Offline</p>
         </div>
       </>
-    )
-  } else {
-    return (
-      <></>
     )
   }
 }
