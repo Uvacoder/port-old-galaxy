@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Typist from 'react-typist'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub, faTwitter, faYoutube } from '@fortawesome/free-brands-svg-icons'
-import Lanyard from '../components/Lanyard';
+import Lanyard from '../components/Lanyard'
 import styles from './Home.module.scss'
 
 export default function Home() {

@@ -1,16 +1,13 @@
-import Image from 'next/image';
-import styled from 'styled-components';
-import { useState, useEffect } from 'react';
-import { useLanyard } from 'use-lanyard';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSpotify } from '@fortawesome/free-brands-svg-icons'
+import styled from 'styled-components'
+import { useState, useEffect } from 'react'
+import { useLanyard } from 'use-lanyard'
 import styles from './Lanyard.module.scss'
 
 export default function Lanyard() {
   const { data: activity } = useLanyard('182292736790102017');
 
   const [spotifyFormattedTimestamp, setSpotifyFormattedTimestamp] = useState('0:00 / 0:00');
-  const [formattedTimestamp, setFormattedTimestamp] = useState('0:00 elapsed');
+  const [formattedTimestamp, setFormattedTimestamp] = useState('');
 
   const [intervalCheck, setIntervalCheck] = useState(0);
 
@@ -42,20 +39,24 @@ export default function Lanyard() {
     return `https://cdn.discordapp.com/app-assets/${application}/${asset}.png`
   }
 
-  if (activity !== undefined && activity.activities.find(act => act.type === 0) !== undefined ) {
+  const TRANSPARENT_IMAGE = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
+
+  const WHITELISTED_GAMES = ['Visual Studio Code'];
+
+  if (activity !== undefined && activity.activities.find(act => act.type === 0) !== undefined && WHITELISTED_GAMES.includes(activity.activities.find(act => act.type === 0).name)) {
     return (
       <>
         <div className={styles.activity}>
           <Row>
             <ImageContainer>
               <img className={styles.primaryImage}
-                src={ activity.activities.find(act => act.type === 0).assets.large_image !== undefined ? getDiscordAssetURL(activity.activities.find(act => act.type === 0).application_id, activity.activities.find(act => act.type === 0).assets.large_image) : '' }
+                src={ activity.activities.find(act => act.type === 0).assets.large_image !== undefined ? getDiscordAssetURL(activity.activities.find(act => act.type === 0).application_id, activity.activities.find(act => act.type === 0).assets.large_image) : TRANSPARENT_IMAGE }
                 alt={ activity.activities.find(act => act.type === 0).assets.large_text !== undefined ? activity.activities.find(act => act.type === 0).assets.large_text : '' }
                 width={60}
                 height={60}
               />
               <img className={styles.secondaryImage}
-                src={ activity.activities.find(act => act.type === 0).assets.small_image !== undefined ? getDiscordAssetURL(activity.activities.find(act => act.type === 0).application_id, activity.activities.find(act => act.type === 0).assets.small_image) : '' }
+                src={ activity.activities.find(act => act.type === 0).assets.small_image !== undefined ? getDiscordAssetURL(activity.activities.find(act => act.type === 0).application_id, activity.activities.find(act => act.type === 0).assets.small_image) : TRANSPARENT_IMAGE }
                 alt={ activity.activities.find(act => act.type === 0).assets.small_text !== undefined ? activity.activities.find(act => act.type === 0).assets.small_text : '' }
                 width={20}
                 height={20}
