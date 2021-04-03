@@ -15,7 +15,7 @@ export default function Lanyard() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if(activity !== undefined && activity.listening_to_spotify) {
+      if(activity !== undefined && activity.listening_to_spotify && Date.now() <= activity.spotify.timestamps.end) {
         const current = Math.floor((Date.now() - activity.spotify.timestamps.start) / 1000);
         const currentFormatted = `${Math.floor(current / 60)}:${Math.floor(current % 60).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })}`;
     
@@ -32,7 +32,7 @@ export default function Lanyard() {
         setFormattedTimestamp(`${currentFormatted} elapsed`);
       }
       setIntervalCheck(intervalCheck + 1);
-    }, 1000);
+    }, 100);
 
     return () => clearInterval(interval);
   }, [intervalCheck]);
