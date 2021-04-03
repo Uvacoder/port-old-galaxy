@@ -88,8 +88,8 @@ export default function Lanyard() {
             </ImageContainer>
             <InfoContainer>
               <Info>{activity.spotify.song && <h5>{activity.spotify.song}</h5>}</Info>
-              <Info>{activity.spotify.artist && <p>{activity.spotify.artist.replaceAll(';', ',')}</p>}</Info>
-              <Info>{activity.spotify.album && <p>{activity.spotify.album}</p>}</Info>
+              <Info>{activity.spotify.artist && <p>by {activity.spotify.artist.replaceAll(';', ',')}</p>}</Info>
+              <Info>{activity.spotify.album && <p>on {activity.spotify.album}</p>}</Info>
               <Info><p>{spotifyFormattedTimestamp}</p></Info>
             </InfoContainer>
           </Row>
