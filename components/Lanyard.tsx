@@ -49,12 +49,14 @@ export default function Lanyard() {
           <Row>
             <ImageContainer>
               <img className={styles.primaryImage}
-                src={ getDiscordAssetURL(activity.activities.find(act => act.type === 0).application_id, activity.activities.find(act => act.type === 0).assets.large_image) }
+                src={ activity.activities.find(act => act.type === 0).application_id !== undefined ? getDiscordAssetURL(activity.activities.find(act => act.type === 0).application_id, activity.activities.find(act => act.type === 0).assets.large_image) : '' }
+                alt={ activity.activities.find(act => act.type === 0).assets.large_text !== undefined ? activity.activities.find(act => act.type === 0).assets.large_text : '' }
                 width={60}
                 height={60}
               />
               <img className={styles.secondaryImage}
-                src={ getDiscordAssetURL(activity.activities.find(act => act.type === 0).application_id, activity.activities.find(act => act.type === 0).assets.small_image) }
+                src={ activity.activities.find(act => act.type === 0).application_id !== undefined ? getDiscordAssetURL(activity.activities.find(act => act.type === 0).application_id, activity.activities.find(act => act.type === 0).assets.small_image) : '' }
+                alt={ activity.activities.find(act => act.type === 0).assets.small_text !== undefined ? activity.activities.find(act => act.type === 0).assets.small_text : '' }
                 width={20}
                 height={20}
               />
