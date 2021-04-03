@@ -11,7 +11,7 @@ export default function Home() {
       <Head>
         <title>iGalaxy | William</title>
       </Head>
-      <div>
+      <div style={{width: '300px'}}>
         <h1><Typist>Hello, I'm <span className={styles.purpleText}>William</span></Typist></h1>
       </div>
       <Lanyard />
