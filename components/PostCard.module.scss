@@ -1,0 +1,18 @@
+.postCard {
+  margin-bottom: .83em;
+  padding: 16px;
+  width: 300px;
+  height: 95px;
+
+  transition: background-color 1s;
+  transition: border-color 1s;
+
+  background-color: rgb(22, 22, 22);
+  border: 0.75px solid rgba(200, 200, 200, 0.3);
+  border-radius: 5px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: rgb(26, 26, 26);
+  }
+}

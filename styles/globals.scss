@@ -21,3 +21,12 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.textLink {
+  color: rgb(199, 199, 199);
+  font-size: 14px;
+
+  &:hover {
+    color: rgb(243, 243, 243);
+  }
+}
