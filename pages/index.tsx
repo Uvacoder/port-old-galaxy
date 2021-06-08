@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Typist from 'react-typist'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGithub, faTwitter, faYoutube } from '@fortawesome/free-brands-svg-icons'
+import { faGithub, faTwitter, faYoutube, faTwitch } from '@fortawesome/free-brands-svg-icons'
 import { faBell } from '@fortawesome/free-solid-svg-icons'
 
 import PostCard from '../components/PostCard'
@@ -35,11 +35,12 @@ export default function Home({ allPostsData }) {
           <a href="https://link.igalaxy.dev/github" target="_blank" className={styles.icon}><FontAwesomeIcon icon={faGithub} /></a>
           <a href="https://link.igalaxy.dev/twitter" target="_blank" className={styles.icon}><FontAwesomeIcon icon={faTwitter} /></a>
           <a href="https://link.igalaxy.dev/youtube" target="_blank" className={styles.icon}><FontAwesomeIcon icon={faYoutube} /></a>
-          <a href="https://sub.to/igalaxy" target="_blank" className={styles.icon}><FontAwesomeIcon icon={faBell} /></a>
+          <a href="https://link.igalaxy.dev/twitch" target="_blank" className={styles.icon}><FontAwesomeIcon icon={faTwitch} /></a>
+          {/* <a href="https://sub.to/igalaxy" target="_blank" className={styles.icon}><FontAwesomeIcon icon={faBell} /></a> */}
         </h2>
       </div>
       <br />
-      <div>
+      {/* <div>
         <h2>My Thoughts</h2>
         {(allPostsData.map((post, i) => {
           if (i < 1) return (
@@ -48,7 +49,7 @@ export default function Home({ allPostsData }) {
           else return
         }))}
         <Link href="/posts"><a className="textLink">View All</a></Link>
-      </div>
+      </div> */}
     </div>
   )
 }

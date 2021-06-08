@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useLanyard } from 'use-lanyard'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMobileAlt } from '@fortawesome/free-solid-svg-icons'
+import StatusLoader from './StatusLoader'
 import styles from './Lanyard.module.scss'
 
 export default function Lanyard() {
@@ -122,11 +123,19 @@ export default function Lanyard() {
         </>
       )
     }
-  } else {
+  } else if (activity !== undefined && !activity.active_on_discord_desktop && !activity.active_on_discord_mobile ) {
     return (
       <>
         <div className={styles.activityOnlineStatus}>
           <p><OfflineCircle />Offline</p>
+        </div>
+      </>
+    )
+  } else {
+    return (
+      <>
+        <div className={styles.activityOnlineStatus}>
+          <StatusLoader />
         </div>
       </>
     )
