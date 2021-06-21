@@ -47,7 +47,7 @@ export default function Lanyard() {
 
   const TRANSPARENT_IMAGE = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
 
-  const BLACKLISTED_GAMES = ['Among Us'];
+  const BLACKLISTED_GAMES = [];
 
   if (activity !== undefined && activity.activities.find(act => act.type === 0) !== undefined && !BLACKLISTED_GAMES.includes(activity.activities.find(act => act.type === 0).name)) {
     return (
