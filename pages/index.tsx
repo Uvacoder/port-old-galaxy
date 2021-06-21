@@ -40,7 +40,7 @@ export default function Home({ allPostsData }) {
         </h2>
       </div>
       <br />
-      <div>
+      {/* <div>
         <h2>My Thoughts</h2>
         {(allPostsData.map((post, i) => {
           if (i < 1) return (
@@ -49,7 +49,7 @@ export default function Home({ allPostsData }) {
           else return
         }))}
         <Link href="/posts"><a className="textLink">View All</a></Link>
-      </div>
+      </div> */}
     </div>
   )
 }

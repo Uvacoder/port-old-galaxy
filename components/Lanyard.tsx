@@ -11,6 +11,7 @@ export default function Lanyard() {
 
   const [spotifyFormattedTimestamp, setSpotifyFormattedTimestamp] = useState('0:00 / 0:00');
   const [formattedTimestamp, setFormattedTimestamp] = useState('');
+  const [progressPercentage, setProgressPercentage] = useState('0%');
 
   const [intervalCheck, setIntervalCheck] = useState(0);
 
@@ -24,6 +25,8 @@ export default function Lanyard() {
         const endFormatted = `${Math.floor(endTime / 60)}:${Math.floor(endTime % 60).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })}`;
     
         setSpotifyFormattedTimestamp(`${currentFormatted} / ${endFormatted}`);
+
+        setProgressPercentage(`${((Date.now() - activity.spotify.timestamps.start) / (activity.spotify.timestamps.end - activity.spotify.timestamps.start)) * 100}%`);
       }
   
       if(activity !== undefined && activity.activities.find(act => act.type === 0) !== undefined && activity.activities.find(act => act.type === 0).timestamps.start !== undefined){
@@ -91,8 +94,19 @@ export default function Lanyard() {
               <Info>{activity.spotify.song && <h5>{activity.spotify.song}</h5>}</Info>
               <Info>{activity.spotify.artist && <p>by {activity.spotify.artist.replaceAll(';', ',')}</p>}</Info>
               <Info>{activity.spotify.album && <p>on {activity.spotify.album}</p>}</Info>
-              <Info><p>{spotifyFormattedTimestamp}</p></Info>
+              <Info></Info>
             </InfoContainer>
+          </Row>
+          <Row>
+            <ProgressContainer>
+              <ProgressBackground>
+                <ProgressForeground style={{width: progressPercentage}} />
+              </ProgressBackground>
+              <TimestampContainer>
+                <p>{spotifyFormattedTimestamp.split(' / ')[0]}</p>
+                <p>{spotifyFormattedTimestamp.split(' / ')[1]}</p>
+              </TimestampContainer>
+            </ProgressContainer>
           </Row>
         </div>
       </>
@@ -182,6 +196,47 @@ const Info = styled.div`
     white-space: nowrap;
     overflow: hidden;
   }
+`;
+
+const ProgressContainer = styled.div`
+  width: 100%;
+  margin-top: 10px;
+  margin-left: 0rem;
+  text-align: left;
+  h5 {
+    margin: 0;
+    font-size: 13px;
+    
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  p {
+    margin: 0;
+    padding-top: 3px;
+    font-size: 10px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+`;
+
+const ProgressBackground = styled.div`
+  background-color: rgb(42, 201, 98);
+  height: 5px;
+  border-radius: 5px;
+`;
+
+const ProgressForeground = styled.div`
+  background-color: #fff;
+  height: 100%;
+  border-radius: 5px;
+`;
+
+const TimestampContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 const OnlineCircle = styled.div`
