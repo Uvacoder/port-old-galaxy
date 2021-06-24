@@ -45,6 +45,14 @@ export default function Lanyard() {
     return `https://cdn.discordapp.com/app-assets/${application}/${asset}.png`
   }
 
+  function getLargeAssetOverride(name) {
+    const LARGE_ASSET_OVERRIDES = {
+      VALORANT: 'https://cdn.discordapp.com/app-icons/700136079562375258/e55fc8259df1548328f977d302779ab7'
+    }
+
+    return LARGE_ASSET_OVERRIDES[name] ? LARGE_ASSET_OVERRIDES[name] : undefined
+  }
+
   const TRANSPARENT_IMAGE = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
 
   const BLACKLISTED_GAMES = [];
@@ -56,14 +64,14 @@ export default function Lanyard() {
           <Row>
             <ImageContainer>
               <img className={styles.primaryImage}
-                src={ activity.activities.find(act => act.type === 0).assets.large_image !== undefined ? getDiscordAssetURL(activity.activities.find(act => act.type === 0).application_id, activity.activities.find(act => act.type === 0).assets.large_image) : TRANSPARENT_IMAGE }
-                alt={ activity.activities.find(act => act.type === 0).assets.large_text !== undefined ? activity.activities.find(act => act.type === 0).assets.large_text : '' }
+                src={ activity.activities.find(act => act.type === 0).assets && activity.activities.find(act => act.type === 0).assets.large_image !== undefined ? getDiscordAssetURL(activity.activities.find(act => act.type === 0).application_id, activity.activities.find(act => act.type === 0).assets.large_image) : getLargeAssetOverride(activity.activities.find(act => act.type === 0).name) ? getLargeAssetOverride(activity.activities.find(act => act.type === 0).name) : TRANSPARENT_IMAGE }
+                alt={ activity.activities.find(act => act.type === 0).assets && activity.activities.find(act => act.type === 0).assets.large_text !== undefined ? activity.activities.find(act => act.type === 0).assets.large_text : '' }
                 width={60}
                 height={60}
               />
               <img className={styles.secondaryImage}
-                src={ activity.activities.find(act => act.type === 0).assets.small_image !== undefined ? getDiscordAssetURL(activity.activities.find(act => act.type === 0).application_id, activity.activities.find(act => act.type === 0).assets.small_image) : TRANSPARENT_IMAGE }
-                alt={ activity.activities.find(act => act.type === 0).assets.small_text !== undefined ? activity.activities.find(act => act.type === 0).assets.small_text : '' }
+                src={ activity.activities.find(act => act.type === 0).assets && activity.activities.find(act => act.type === 0).assets.small_image !== undefined ? getDiscordAssetURL(activity.activities.find(act => act.type === 0).application_id, activity.activities.find(act => act.type === 0).assets.small_image) : TRANSPARENT_IMAGE }
+                alt={ activity.activities.find(act => act.type === 0).assets && activity.activities.find(act => act.type === 0).assets.small_text !== undefined ? activity.activities.find(act => act.type === 0).assets.small_text : '' }
                 width={20}
                 height={20}
               />
