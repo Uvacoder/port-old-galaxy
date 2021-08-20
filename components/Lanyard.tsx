@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { useState, useEffect } from 'react'
-import { useLanyard } from 'use-lanyard'
+import { Activity, useLanyard } from 'use-lanyard'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMobileAlt } from '@fortawesome/free-solid-svg-icons'
 import StatusLoader from './StatusLoader'
@@ -57,6 +57,26 @@ export default function Lanyard() {
 
   const BLACKLISTED_GAMES = [];
 
+  function LanyardUserInfoStatus() {
+    if ( activity.discord_status === 'dnd' ) {
+      return (
+        <p style={{fontSize: '16px'}}><DndCircle />Do Not Disturb</p>
+      )
+    } else if ( activity.active_on_discord_desktop ) {
+      return (
+        <p style={{fontSize: '16px'}}><OnlineCircle />Online</p>
+      )
+    } else if ( activity.active_on_discord_mobile ) {
+      return (
+        <p style={{fontSize: '16px'}}><OnlineMobile><FontAwesomeIcon icon={faMobileAlt} /></OnlineMobile>Online</p>
+      )
+    } else { 
+      return (
+        <p style={{fontSize: '16px'}}><OfflineCircle />Offline</p>
+      )
+    }
+  }
+
   function LanyardUserInfo() {
     return (
       <Row style={{paddingBottom: '16px'}}>
@@ -70,6 +90,9 @@ export default function Lanyard() {
         </ImageContainer>
         <InfoContainer>
           <Info><h3>{ activity.discord_user.username }<span style={{color: '#b9bbbe'}}>#{ activity.discord_user.discriminator }</span></h3></Info>
+          <Info>
+            {/* <LanyardUserInfoStatus /> */}
+          </Info>
         </InfoContainer>
       </Row>
     )
