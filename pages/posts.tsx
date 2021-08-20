@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 import PostCard from '../components/PostCard'
 
-import styles from './Posts.module.scss'
+import styles from '../styles/Posts.module.scss'
 import { getSortedPostsData } from '../lib/posts'
 
 export async function getStaticProps() {

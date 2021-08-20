@@ -9,7 +9,7 @@ import PostCard from '../components/PostCard'
 
 import { getSortedPostsData } from '../lib/posts'
 import Lanyard from '../components/Lanyard'
-import styles from './Home.module.scss'
+import styles from '../styles/Home.module.scss'
 
 export async function getStaticProps() {
   const allPostsData = getSortedPostsData()
@@ -39,7 +39,7 @@ export default function Home({ allPostsData }) {
           {/* <a href="https://sub.to/igalaxy" target="_blank" className={styles.icon}><FontAwesomeIcon icon={faBell} /></a> */}
         </h2>
       </div>
-      <br />
+      {/* <br />
       <div>
         <h2>My Thoughts</h2>
         {(allPostsData.map((post, i) => {
@@ -49,7 +49,7 @@ export default function Home({ allPostsData }) {
           else return
         }))}
         <Link href="/posts"><a className="textLink">View All</a></Link>
-      </div>
+      </div> */}
     </div>
   )
 }
