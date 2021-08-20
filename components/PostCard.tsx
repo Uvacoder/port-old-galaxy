@@ -1,4 +1,4 @@
-import styles from './PostCard.module.scss'
+import styles from '../styles/PostCard.module.scss'
 
 export default function PostCard({ postData }) {
   const { id, date, title } = postData;

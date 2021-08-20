@@ -4,7 +4,7 @@ import { useLanyard } from 'use-lanyard'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMobileAlt } from '@fortawesome/free-solid-svg-icons'
 import StatusLoader from './StatusLoader'
-import styles from './Lanyard.module.scss'
+import styles from '../styles/Lanyard.module.scss'
 
 export default function Lanyard() {
   const { data: activity } = useLanyard('182292736790102017');
@@ -57,10 +57,29 @@ export default function Lanyard() {
 
   const BLACKLISTED_GAMES = [];
 
+  function LanyardUserInfo() {
+    return (
+      <Row style={{paddingBottom: '16px'}}>
+        <ImageContainer>
+          <img className={styles.avatarImage}
+            src={ `https://cdn.discordapp.com/avatars/${activity.discord_user.id}/${activity.discord_user.avatar}${activity.discord_user.avatar.startsWith('a_') ? '.gif' : '.png' }` }
+            alt={ `${activity.discord_user.id}#${activity.discord_user.discriminator}` }
+            width={60}
+            height={60}
+          />
+        </ImageContainer>
+        <InfoContainer>
+          <Info><h3>{ activity.discord_user.username }<span style={{color: '#b9bbbe'}}>#{ activity.discord_user.discriminator }</span></h3></Info>
+        </InfoContainer>
+      </Row>
+    )
+  }
+
   if (activity !== undefined && activity.activities.find(act => act.type === 0) !== undefined && !BLACKLISTED_GAMES.includes(activity.activities.find(act => act.type === 0).name)) {
     return (
       <>
         <div className={styles.activity}>
+          <LanyardUserInfo />
           <Row>
             <ImageContainer>
               <img className={styles.primaryImage}
@@ -90,6 +109,7 @@ export default function Lanyard() {
     return (
       <>
         <div className={styles.activitySpotify}>
+          <LanyardUserInfo />
           <Row>
             <ImageContainer>
               <img className={styles.primaryImage}
@@ -191,6 +211,14 @@ const Info = styled.div`
     margin: 0;
     font-size: 13px;
     
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  h3 {
+    margin: 0;
+    font-size: 20px;
+
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
