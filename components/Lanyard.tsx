@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { useState, useEffect } from 'react'
 import { Activity, useLanyard } from 'use-lanyard'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGithub, faTwitter, faYoutube, faTwitch } from '@fortawesome/free-brands-svg-icons'
 import { faMobileAlt } from '@fortawesome/free-solid-svg-icons'
 import StatusLoader from './StatusLoader'
 import styles from '../styles/Lanyard.module.scss'
@@ -60,139 +61,137 @@ export default function Lanyard() {
   function LanyardUserInfoStatus() {
     if ( activity.discord_status === 'dnd' ) {
       return (
-        <p style={{fontSize: '16px'}}><DndCircle />Do Not Disturb</p>
+        <>
+          <DndCircle className={styles.secondaryImage} />
+        </>
       )
     } else if ( activity.active_on_discord_desktop ) {
       return (
-        <p style={{fontSize: '16px'}}><OnlineCircle />Online</p>
+        <>
+          <OnlineCircle className={styles.secondaryImage} />
+        </>
       )
     } else if ( activity.active_on_discord_mobile ) {
       return (
-        <p style={{fontSize: '16px'}}><OnlineMobile><FontAwesomeIcon icon={faMobileAlt} /></OnlineMobile>Online</p>
+        <>
+          <OnlineMobile className={styles.secondaryImage} ><FontAwesomeIcon icon={faMobileAlt} /></OnlineMobile>
+        </>
       )
     } else { 
       return (
-        <p style={{fontSize: '16px'}}><OfflineCircle />Offline</p>
+        <>
+          <OfflineCircle className={styles.secondaryImage} />
+        </>
       )
     }
   }
 
   function LanyardUserInfo() {
     return (
-      <Row style={{paddingBottom: '16px'}}>
-        <ImageContainer>
-          <img className={styles.avatarImage}
-            src={ `https://cdn.discordapp.com/avatars/${activity.discord_user.id}/${activity.discord_user.avatar}${activity.discord_user.avatar.startsWith('a_') ? '.gif' : '.png' }` }
-            alt={ `${activity.discord_user.id}#${activity.discord_user.discriminator}` }
-            width={60}
-            height={60}
-          />
-        </ImageContainer>
-        <InfoContainer>
-          <Info><h3>{ activity.discord_user.username }<span style={{color: '#b9bbbe'}}>#{ activity.discord_user.discriminator }</span></h3></Info>
-          <Info>
-            {/* <LanyardUserInfoStatus /> */}
-          </Info>
-        </InfoContainer>
-      </Row>
+      <>
+        <Row style={{paddingBottom: '8px'}}>
+          <ImageContainer>
+            <img className={styles.avatarImage}
+              src={ `https://cdn.discordapp.com/avatars/${activity.discord_user.id}/${activity.discord_user.avatar}${activity.discord_user.avatar.startsWith('a_') ? '.gif' : '.png' }` }
+              alt={ `${activity.discord_user.id}#${activity.discord_user.discriminator}` }
+              width={60}
+              height={60}
+            />
+            <LanyardUserInfoStatus />
+          </ImageContainer>
+          {/* <InfoContainer style={{width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly'}}>
+            <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
+              <a href="https://link.igalaxy.dev/github" target="_blank" className={styles.icon}><FontAwesomeIcon icon={faGithub} /></a>
+              <a href="https://link.igalaxy.dev/twitter" target="_blank" className={styles.icon}><FontAwesomeIcon icon={faTwitter} /></a>
+              <a href="https://link.igalaxy.dev/youtube" target="_blank" className={styles.icon}><FontAwesomeIcon icon={faYoutube} /></a>
+              <a href="https://link.igalaxy.dev/twitch" target="_blank" className={styles.icon}><FontAwesomeIcon icon={faTwitch} /></a>
+            </div>
+          </InfoContainer> */}
+        </Row>
+        <Row style={ activity.activities.length > 0 ? {paddingBottom: '16px'} : {}}>
+          <Info style={{padding: 0, margin: 0}}><h3>{ activity.discord_user.username }<span style={{color: '#b9bbbe'}}>#{ activity.discord_user.discriminator }</span></h3></Info>
+        </Row>
+      </>
     )
   }
 
-  if (activity !== undefined && activity.activities.find(act => act.type === 0) !== undefined && !BLACKLISTED_GAMES.includes(activity.activities.find(act => act.type === 0).name)) {
+  function LanyardUserActivity(activityData: Activity, index) {
+    switch(activityData.type) {
+      case 0: {
+        return (
+          <>
+            <Row>
+              <ActivityHeader>PLAYING A GAME</ActivityHeader>
+            </Row>
+            <Row style={ index < (activity.activities.length - 1) ? {paddingBottom: '16px'} : {} }>
+              <ImageContainer>
+                <img className={styles.primaryImage}
+                  src={ activityData.assets && activityData.assets.large_image !== undefined ? getDiscordAssetURL(activityData.application_id, activityData.assets.large_image) : getLargeAssetOverride(activityData.name) ? getLargeAssetOverride(activityData.name) : TRANSPARENT_IMAGE }
+                  alt={ activityData.assets && activityData.assets.large_text !== undefined ? activityData.assets.large_text : '' }
+                  width={60}
+                  height={60}
+                />
+                <img className={styles.secondaryImage}
+                  src={ activityData.assets && activityData.assets.small_image !== undefined ? getDiscordAssetURL(activityData.application_id, activityData.assets.small_image) : TRANSPARENT_IMAGE }
+                  alt={ activityData.assets && activityData.assets.small_text !== undefined ? activityData.assets.small_text : '' }
+                  width={20}
+                  height={20}
+                />
+              </ImageContainer>
+              <InfoContainer>
+                <Info><h5>{activityData.name}</h5></Info>
+                <Info>{activityData.details && <p>{activityData.details}</p>}</Info>
+                <Info>{activityData.state && <p>{activityData.state}</p>}</Info>
+                <Info><p>{formattedTimestamp}</p></Info>
+              </InfoContainer>
+            </Row>
+          </>
+        )
+      }
+      case 2: {
+        return (
+          <>
+            <Row>
+              <ActivityHeader>LISTENING TO SPOTIFY</ActivityHeader>
+            </Row>
+            <Row>
+              <ImageContainer>
+                <img className={styles.primaryImage}
+                  src={ activity.listening_to_spotify ? activity.spotify.album_art_url : '' }
+                  width={60}
+                  height={60}
+                />
+              </ImageContainer>
+              <InfoContainer>
+                <Info>{activity.spotify.song && <h5>{activity.spotify.song}</h5>}</Info>
+                <Info>{activity.spotify.artist && <p>by {activity.spotify.artist.replaceAll(';', ',')}</p>}</Info>
+                <Info>{activity.spotify.album && <p>on {activity.spotify.album}</p>}</Info>
+                <Info></Info>
+              </InfoContainer>
+            </Row>
+            <Row style={ index < (activity.activities.length - 1) ? {paddingBottom: '16px'} : {} }>
+              <ProgressContainer>
+                <ProgressBackground>
+                  <ProgressForeground style={{width: progressPercentage}} />
+                </ProgressBackground>
+                <TimestampContainer>
+                  <p>{spotifyFormattedTimestamp.split(' / ')[0]}</p>
+                  <p>{spotifyFormattedTimestamp.split(' / ')[1]}</p>
+                </TimestampContainer>
+              </ProgressContainer>
+            </Row>
+          </>
+        )
+      }
+    }
+  }
+
+  if (activity !== undefined) {
     return (
       <>
         <div className={styles.activity}>
           <LanyardUserInfo />
-          <Row>
-            <ImageContainer>
-              <img className={styles.primaryImage}
-                src={ activity.activities.find(act => act.type === 0).assets && activity.activities.find(act => act.type === 0).assets.large_image !== undefined ? getDiscordAssetURL(activity.activities.find(act => act.type === 0).application_id, activity.activities.find(act => act.type === 0).assets.large_image) : getLargeAssetOverride(activity.activities.find(act => act.type === 0).name) ? getLargeAssetOverride(activity.activities.find(act => act.type === 0).name) : TRANSPARENT_IMAGE }
-                alt={ activity.activities.find(act => act.type === 0).assets && activity.activities.find(act => act.type === 0).assets.large_text !== undefined ? activity.activities.find(act => act.type === 0).assets.large_text : '' }
-                width={60}
-                height={60}
-              />
-              <img className={styles.secondaryImage}
-                src={ activity.activities.find(act => act.type === 0).assets && activity.activities.find(act => act.type === 0).assets.small_image !== undefined ? getDiscordAssetURL(activity.activities.find(act => act.type === 0).application_id, activity.activities.find(act => act.type === 0).assets.small_image) : TRANSPARENT_IMAGE }
-                alt={ activity.activities.find(act => act.type === 0).assets && activity.activities.find(act => act.type === 0).assets.small_text !== undefined ? activity.activities.find(act => act.type === 0).assets.small_text : '' }
-                width={20}
-                height={20}
-              />
-            </ImageContainer>
-            <InfoContainer>
-              <Info><h5>{activity.activities.find(act => act.type === 0).name}</h5></Info>
-              <Info>{activity.activities.find(act => act.type === 0).details && <p>{activity.activities.find(act => act.type === 0).details}</p>}</Info>
-              <Info>{activity.activities.find(act => act.type === 0).state && <p>{activity.activities.find(act => act.type === 0).state}</p>}</Info>
-              <Info><p>{formattedTimestamp}</p></Info>
-            </InfoContainer>
-          </Row>
-        </div>
-      </>
-    )
-  } else if (activity !== undefined && activity.listening_to_spotify) {
-    return (
-      <>
-        <div className={styles.activitySpotify}>
-          <LanyardUserInfo />
-          <Row>
-            <ImageContainer>
-              <img className={styles.primaryImage}
-                src={ activity.listening_to_spotify ? activity.spotify.album_art_url : '' }
-                width={60}
-                height={60}
-              />
-            </ImageContainer>
-            <InfoContainer>
-              <Info>{activity.spotify.song && <h5>{activity.spotify.song}</h5>}</Info>
-              <Info>{activity.spotify.artist && <p>by {activity.spotify.artist.replaceAll(';', ',')}</p>}</Info>
-              <Info>{activity.spotify.album && <p>on {activity.spotify.album}</p>}</Info>
-              <Info></Info>
-            </InfoContainer>
-          </Row>
-          <Row>
-            <ProgressContainer>
-              <ProgressBackground>
-                <ProgressForeground style={{width: progressPercentage}} />
-              </ProgressBackground>
-              <TimestampContainer>
-                <p>{spotifyFormattedTimestamp.split(' / ')[0]}</p>
-                <p>{spotifyFormattedTimestamp.split(' / ')[1]}</p>
-              </TimestampContainer>
-            </ProgressContainer>
-          </Row>
-        </div>
-      </>
-    )
-  } else if (activity !== undefined && (activity.active_on_discord_mobile || activity.active_on_discord_desktop)) {
-    if (activity.discord_status === 'dnd') {
-      return (
-        <>
-          <div className={styles.activityOnlineStatusDnd}>
-            <p><DndCircle />Do Not Disturb</p>
-          </div>
-        </>
-      )
-    } else if (activity.active_on_discord_desktop) {
-      return (
-        <>
-          <div className={styles.activityOnlineStatus}>
-            <p><OnlineCircle />Online</p>
-          </div>
-        </>
-      )
-    } else if (activity.active_on_discord_mobile) {
-      return (
-        <>
-          <div className={styles.activityOnlineStatus}>
-            <p><OnlineMobile><FontAwesomeIcon icon={faMobileAlt} /></OnlineMobile>Online</p>
-          </div>
-        </>
-      )
-    }
-  } else if (activity !== undefined && !activity.active_on_discord_desktop && !activity.active_on_discord_mobile ) {
-    return (
-      <>
-        <div className={styles.activityOnlineStatus}>
-          <p><OfflineCircle />Offline</p>
+          { activity.activities.map((x, index) => LanyardUserActivity(x, index)) }
         </div>
       </>
     )
@@ -210,6 +209,13 @@ export default function Lanyard() {
 /**
  * Flexbox shamelessly taken from https://github.com/atn/astn.me
  */
+
+const ActivityHeader = styled.h6`
+  margin-bottom: 8px;
+  margin-top: 0;
+  font-size: 12px;
+  color: #b9bbbe;
+`;
 
 const ImageContainer = styled.div`
   position: relative;
@@ -282,13 +288,13 @@ const ProgressContainer = styled.div`
 `;
 
 const ProgressBackground = styled.div`
-  background-color: rgb(42, 201, 98);
+  background-color: rgba(200, 200, 200, 0.3);
   height: 5px;
   border-radius: 5px;
 `;
 
 const ProgressForeground = styled.div`
-  background-color: #fff;
+  background-color: #dcddde;
   height: 100%;
   border-radius: 5px;
 `;
@@ -299,34 +305,33 @@ const TimestampContainer = styled.div`
 `;
 
 const OnlineCircle = styled.div`
-  height: 10px;
-  width: 10px;
+  height: 25px;
+  width: 25px;
   border-radius:50%;
   background-color: rgb(28, 176, 80);
   display: inline-block;
-  margin-right: 10px;
+  border: 5px solid #161616;
 `;
 
 const DndCircle = styled.div`
-  height: 10px;
-  width: 10px;
+  height: 25px;
+  width: 25px;
   border-radius:50%;
   background-color: #f04747;
   display: inline-block;
-  margin-right: 10px;
+  border: 5px solid #161616;
 `;
 
 const OfflineCircle = styled.div`
-  height: 10px;
-  width: 10px;
+  height: 25px;
+  width: 25px;
   border-radius:50%;
-  background-color: rgba(200, 200, 200, 0.3);
+  background-color: #747f8d;
   display: inline-block;
-  margin-right: 10px;
+  border: 5px solid #161616;
 `;
 
 const OnlineMobile = styled.div`
   display: inline-block;
-  margin-right: 10px;
   color: rgb(28, 176, 80);
 `;
