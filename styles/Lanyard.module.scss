@@ -15,6 +15,11 @@
     background-color: rgb(26, 26, 26);
   }
 
+  &Loader {
+    @extend .activity;
+    padding: 0;
+  }
+
 }
 
 .primaryImage {
@@ -24,13 +29,33 @@
 }
 
 .secondaryImage {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   position: absolute;
   bottom: -5px;
   right: -5px;
   border-radius: 50%;
-  border: 2px solid #161616;
+  
+  &Mobile {
+    @extend .secondaryImage;
+
+    width: 17px;
+    height: 22px;
+    font-size: 16px;
+    background-color: #161616;
+    border-radius: 3px;
+    padding-top: 2px;
+    right: 2px;
+    bottom: -2px;
+  }
+
+  &Outline {
+    @extend .secondaryImage;
+
+    width: 22px;
+    height: 22px;
+    border: 2px solid #161616;
+  }
 }
 
 .avatarImage {

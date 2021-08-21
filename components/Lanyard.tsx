@@ -2,8 +2,8 @@ import styled from 'styled-components'
 import { useState, useEffect } from 'react'
 import { Activity, useLanyard } from 'use-lanyard'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGithub, faTwitter, faYoutube, faTwitch } from '@fortawesome/free-brands-svg-icons'
 import { faMobileAlt } from '@fortawesome/free-solid-svg-icons'
+import Twemoji from 'react-twemoji'
 import StatusLoader from './StatusLoader'
 import styles from '../styles/Lanyard.module.scss'
 
@@ -11,7 +11,6 @@ export default function Lanyard() {
   const { data: activity } = useLanyard('182292736790102017');
 
   const [spotifyFormattedTimestamp, setSpotifyFormattedTimestamp] = useState('0:00 / 0:00');
-  const [formattedTimestamp, setFormattedTimestamp] = useState('');
   const [progressPercentage, setProgressPercentage] = useState('0%');
 
   const [intervalCheck, setIntervalCheck] = useState(0);
@@ -29,18 +28,17 @@ export default function Lanyard() {
 
         setProgressPercentage(`${((Date.now() - activity.spotify.timestamps.start) / (activity.spotify.timestamps.end - activity.spotify.timestamps.start)) * 100}%`);
       }
-  
-      if(activity !== undefined && activity.activities.find(act => act.type === 0) !== undefined && activity.activities.find(act => act.type === 0).timestamps.start !== undefined){
-        const current = Math.floor((Date.now() - activity.activities.find(act => act.type === 0).timestamps.start) / 1000);
-        const currentFormatted = `${Math.floor(current / 60) >= 60 ? `${Math.floor(Math.floor(current / 60) / 60)}:` : ``}${Math.floor(Math.floor(current / 60) - (Math.floor(Math.floor(current / 60) / 60)*60))}:${Math.floor(current % 60).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })}`;
-  
-        setFormattedTimestamp(`${currentFormatted} elapsed`);
-      }
       setIntervalCheck(intervalCheck + 1);
     }, 100);
 
     return () => clearInterval(interval);
   }, [intervalCheck]);
+
+  function getFormattedTimestamp(start: number) {
+    if ( start === 0 ) return '';
+    const current = Math.floor((Date.now() - start) / 1000);
+    return `${Math.floor(current / 60) >= 60 ? `${(Math.floor(Math.floor(current / 60) / 60)).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping: false})}:` : ``}${(Math.floor(Math.floor(current / 60) - (Math.floor(Math.floor(current / 60) / 60)*60))).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping: false})}:${Math.floor(current % 60).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })} elapsed`;
+  }
 
   function getDiscordAssetURL(application, asset) {
     return `https://cdn.discordapp.com/app-assets/${application}/${asset}.png`
@@ -58,29 +56,33 @@ export default function Lanyard() {
 
   const BLACKLISTED_GAMES = [];
 
+  function DiscordEmoji({id, animated}) {
+    return <img className='emoji' width={20} src={`https://cdn.discordapp.com/emojis/${id}${animated ? '.gif' : '.png'}`} />
+  }
+
   function LanyardUserInfoStatus() {
     if ( activity.discord_status === 'dnd' ) {
       return (
         <>
-          <DndCircle className={styles.secondaryImage} />
+          <DndCircle className={styles.secondaryImageOutline} />
         </>
       )
     } else if ( activity.active_on_discord_desktop ) {
       return (
         <>
-          <OnlineCircle className={styles.secondaryImage} />
+          <OnlineCircle className={styles.secondaryImageOutline} />
         </>
       )
     } else if ( activity.active_on_discord_mobile ) {
       return (
         <>
-          <OnlineMobile className={styles.secondaryImage} ><FontAwesomeIcon icon={faMobileAlt} /></OnlineMobile>
+          <OnlineMobile className={styles.secondaryImageMobile} ><FontAwesomeIcon icon={faMobileAlt} /></OnlineMobile>
         </>
       )
     } else { 
       return (
         <>
-          <OfflineCircle className={styles.secondaryImage} />
+          <OfflineCircle className={styles.secondaryImageOutline} />
         </>
       )
     }
@@ -99,14 +101,6 @@ export default function Lanyard() {
             />
             <LanyardUserInfoStatus />
           </ImageContainer>
-          {/* <InfoContainer style={{width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly'}}>
-            <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
-              <a href="https://link.igalaxy.dev/github" target="_blank" className={styles.icon}><FontAwesomeIcon icon={faGithub} /></a>
-              <a href="https://link.igalaxy.dev/twitter" target="_blank" className={styles.icon}><FontAwesomeIcon icon={faTwitter} /></a>
-              <a href="https://link.igalaxy.dev/youtube" target="_blank" className={styles.icon}><FontAwesomeIcon icon={faYoutube} /></a>
-              <a href="https://link.igalaxy.dev/twitch" target="_blank" className={styles.icon}><FontAwesomeIcon icon={faTwitch} /></a>
-            </div>
-          </InfoContainer> */}
         </Row>
         <Row style={ activity.activities.length > 0 ? {paddingBottom: '16px'} : {}}>
           <Info style={{padding: 0, margin: 0}}><h3>{ activity.discord_user.username }<span style={{color: '#b9bbbe'}}>#{ activity.discord_user.discriminator }</span></h3></Info>
@@ -131,7 +125,7 @@ export default function Lanyard() {
                   width={60}
                   height={60}
                 />
-                <img className={styles.secondaryImage}
+                <img className={styles.secondaryImageOutline}
                   src={ activityData.assets && activityData.assets.small_image !== undefined ? getDiscordAssetURL(activityData.application_id, activityData.assets.small_image) : TRANSPARENT_IMAGE }
                   alt={ activityData.assets && activityData.assets.small_text !== undefined ? activityData.assets.small_text : '' }
                   width={20}
@@ -142,7 +136,7 @@ export default function Lanyard() {
                 <Info><h5>{activityData.name}</h5></Info>
                 <Info>{activityData.details && <p>{activityData.details}</p>}</Info>
                 <Info>{activityData.state && <p>{activityData.state}</p>}</Info>
-                <Info><p>{formattedTimestamp}</p></Info>
+                <Info><p>{getFormattedTimestamp(activityData.timestamps.start ? activityData.timestamps.start : 0)}</p></Info>
               </InfoContainer>
             </Row>
           </>
@@ -183,6 +177,25 @@ export default function Lanyard() {
           </>
         )
       }
+      case 4: {
+        if ( activityData.emoji.id ) {
+          return (
+            <>
+              <Row>
+                <ActivityHeader style={{fontWeight: 400, display: 'flex', alignItems: 'center'}}><DiscordEmoji id={activityData.emoji.id} animated={activityData.emoji.animated} />{activityData.state}</ActivityHeader>
+              </Row>
+            </>
+          )
+        } else {
+          return (
+            <>
+              <Row>
+                <ActivityHeader style={{fontWeight: 400}}><Twemoji style={{display: 'flex', alignItems: 'center'}}>{activityData.emoji ? activityData.emoji.name : ''}{activityData.state}</Twemoji></ActivityHeader>
+              </Row>
+            </>
+          )
+        }
+      }
     }
   }
 
@@ -198,7 +211,7 @@ export default function Lanyard() {
   } else {
     return (
       <>
-        <div className={styles.activityOnlineStatus}>
+        <div className={styles.activityLoader}>
           <StatusLoader />
         </div>
       </>
