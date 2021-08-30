@@ -7,8 +7,8 @@ import Twemoji from 'react-twemoji'
 import StatusLoader from './StatusLoader'
 import styles from '../styles/Lanyard.module.scss'
 
-export default function Lanyard() {
-  const { data: activity } = useLanyard('182292736790102017');
+export default function Lanyard({discordId, newTab}) {
+  const { data: activity } = useLanyard(discordId);
 
   const [spotifyFormattedTimestamp, setSpotifyFormattedTimestamp] = useState('0:00 / 0:00');
   const [progressPercentage, setProgressPercentage] = useState('0%');
@@ -65,6 +65,12 @@ export default function Lanyard() {
       return (
         <>
           <DndCircle className={styles.secondaryImageOutline} />
+        </>
+      )
+    } else if ( activity.discord_status === 'idle' ) {
+      return (
+        <>
+          <IdleCircle className={styles.secondaryImageOutline} />
         </>
       )
     } else if ( activity.active_on_discord_desktop ) {
@@ -202,7 +208,7 @@ export default function Lanyard() {
   if (activity !== undefined) {
     return (
       <>
-        <div className={styles.activity}>
+        <div className={ newTab ? styles.activityNewTab : styles.activity }>
           <LanyardUserInfo />
           { activity.activities.map((x, index) => LanyardUserActivity(x, index)) }
         </div>
@@ -211,7 +217,7 @@ export default function Lanyard() {
   } else {
     return (
       <>
-        <div className={styles.activityLoader}>
+        <div className={ newTab ? styles.activityLoaderNewTab : styles.activityLoader }>
           <StatusLoader />
         </div>
       </>
@@ -331,6 +337,15 @@ const DndCircle = styled.div`
   width: 25px;
   border-radius:50%;
   background-color: #f04747;
+  display: inline-block;
+  border: 5px solid #161616;
+`;
+
+const IdleCircle = styled.div`
+  height: 25px;
+  width: 25px;
+  border-radius:50%;
+  background-color: #faa81a;
   display: inline-block;
   border: 5px solid #161616;
 `;

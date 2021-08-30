@@ -29,7 +29,7 @@ export default function Home({ allPostsData }) {
       <div style={{width: '300px'}}>
         <h1><Typist>Hello, I'm <span className={styles.purpleText}>William</span></Typist></h1>
       </div>
-      <Lanyard />
+      <Lanyard discordId={'182292736790102017'} newTab={false} />
       <div>
         <h2>
           <a href="https://link.igalaxy.dev/github" target="_blank" className={styles.icon}><FontAwesomeIcon icon={faGithub} /></a>

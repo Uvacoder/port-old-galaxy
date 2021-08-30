@@ -1,0 +1,38 @@
+.tabBackground {
+  background-color: #010409;
+  padding: 50px;
+  margin: 0;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.bottomContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.greetingContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.greetingPrimary {
+  margin: 0;
+  font-size: 3.5rem;
+  line-height: 1.15;
+  text-align: right;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+.greetingSecondary {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.5;
+  text-align: right;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}

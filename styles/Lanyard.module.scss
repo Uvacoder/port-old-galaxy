@@ -15,9 +15,32 @@
     background-color: rgb(26, 26, 26);
   }
 
+  &NewTab {
+    @extend .activity;
+
+    background-color: #ffffff00;
+    border: 0.75px solid #ffffff00;
+
+    &:hover {
+      background-color: #ffffff00;
+    }
+  }
+
   &Loader {
     @extend .activity;
+
     padding: 0;
+
+    &NewTab {
+      @extend .activityLoader;
+
+      background-color: #ffffff00;
+      border: 0.75px solid #ffffff00;
+
+      &:hover {
+        background-color: #ffffff00;
+      }
+    }
   }
 
 }
