@@ -64,31 +64,31 @@ export default function Lanyard({discordId, newTab}) {
     if ( activity.discord_status === 'dnd' ) {
       return (
         <>
-          <DndCircle className={styles.secondaryImageOutline} />
+          <DndCircle className={newTab ? styles.secondaryImageOutlineNewTab : styles.secondaryImageOutline} />
         </>
       )
     } else if ( activity.discord_status === 'idle' ) {
       return (
         <>
-          <IdleCircle className={styles.secondaryImageOutline} />
+          <IdleCircle className={newTab ? styles.secondaryImageOutlineNewTab : styles.secondaryImageOutline} />
         </>
       )
     } else if ( activity.active_on_discord_desktop ) {
       return (
         <>
-          <OnlineCircle className={styles.secondaryImageOutline} />
+          <OnlineCircle className={newTab ? styles.secondaryImageOutlineNewTab : styles.secondaryImageOutline} />
         </>
       )
     } else if ( activity.active_on_discord_mobile ) {
       return (
         <>
-          <OnlineMobile className={styles.secondaryImageMobile} ><FontAwesomeIcon icon={faMobileAlt} /></OnlineMobile>
+          <OnlineMobile className={newTab ? styles.secondaryImageMobileNewTab : styles.secondaryImageMobile} ><FontAwesomeIcon icon={faMobileAlt} /></OnlineMobile>
         </>
       )
     } else { 
       return (
         <>
-          <OfflineCircle className={styles.secondaryImageOutline} />
+          <OfflineCircle className={newTab ? styles.secondaryImageOutlineNewTab : styles.secondaryImageOutline} />
         </>
       )
     }
@@ -131,7 +131,7 @@ export default function Lanyard({discordId, newTab}) {
                   width={60}
                   height={60}
                 />
-                <img className={styles.secondaryImageOutline}
+                <img className={newTab ? styles.secondaryImageOutlineNewTab : styles.secondaryImageOutline}
                   src={ activityData.assets && activityData.assets.small_image !== undefined ? getDiscordAssetURL(activityData.application_id, activityData.assets.small_image) : TRANSPARENT_IMAGE }
                   alt={ activityData.assets && activityData.assets.small_text !== undefined ? activityData.assets.small_text : '' }
                   width={20}

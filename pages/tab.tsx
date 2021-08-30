@@ -17,6 +17,8 @@ const DAYS = [
 
 function getName(): string {
   if (typeof window == 'undefined') return;
+  if (new URLSearchParams(window.location.search).get('name'))
+    return new URLSearchParams(window.location.search).get('name');
   if (!localStorage.getItem('igalaxy_newtab_name'))
     localStorage.setItem('igalaxy_newtab_name', 'William');
   return localStorage.getItem('igalaxy_newtab_name');
@@ -24,6 +26,8 @@ function getName(): string {
 
 function getDiscordID(): string {
   if (typeof window == 'undefined') return;
+  if (new URLSearchParams(window.location.search).get('discordId'))
+    return new URLSearchParams(window.location.search).get('discordId');
   if (!localStorage.getItem('igalaxy_newtab_discord_id'))
     localStorage.setItem('igalaxy_newtab_discord_id', '182292736790102017');
   return localStorage.getItem('igalaxy_newtab_discord_id');
