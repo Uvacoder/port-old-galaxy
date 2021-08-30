@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import { useState, useEffect } from 'react'
-import styled from 'styled-components'
 
 import styles from '../styles/Tab.module.scss'
 import Lanyard from '../components/Lanyard'
