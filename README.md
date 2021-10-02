@@ -1,4 +1,5 @@
-![Vercel](https://vercelbadge.vercel.app/api/iGalaxyYT/igalaxy.dev)
+**This repo is no longer in use**
+Track my progress on my revamped website [here](https://github.com/iGalaxyYT/home).
 
 This is the repo for my personal website [(igalaxy.dev)](https://igalaxy.dev), built using Next.js and hosted on Vercel.
 
