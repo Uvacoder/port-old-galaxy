@@ -41,7 +41,9 @@ export default function Lanyard({discordId, newTab}) {
   }
 
   function getDiscordAssetURL(application, asset) {
-    return `https://cdn.discordapp.com/app-assets/${application}/${asset}.png`
+    return asset?.startsWith('mp:external')
+			? asset.replace(/mp:external\/([^\/]*)\/(http[s])/g, '$2:/')
+			: `https://cdn.discordapp.com/app-assets/${application}/${asset}.png`;
   }
 
   function getLargeAssetOverride(name) {
